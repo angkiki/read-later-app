@@ -2,7 +2,8 @@ const React = require('react');
 const Nav = require('./components/nav');
 const Flash = require('./components/flash');
 const Home = require('./home');
-const User = require('./users/user_main');
+const User = require('./users/user');
+const Bookmark = require('./bookmarks/bookmark')
 
 class Application extends React.Component {
   render() {
@@ -21,6 +22,9 @@ class Application extends React.Component {
         break;
       case 'user':
         var currentPage = <User subpage={this.props.subpage} />
+        break;
+      case 'bookmarks':
+        var currentPage = <Bookmark subpage={this.props.subpage} bookmarks={this.props.bookmarks} />
         break;
     }
 

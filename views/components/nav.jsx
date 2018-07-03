@@ -26,6 +26,11 @@ class Nav extends React.Component {
 
             {userId != undefined &&
             <li className="nav-item">
+              <a className="nav-link" href="/bookmarks">Bookmarks</a>
+            </li>}
+
+            {userId != undefined &&
+            <li className="nav-item">
               <a className="nav-link" href="/users/logout">Log Out</a>
             </li>}
 

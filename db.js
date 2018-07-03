@@ -14,9 +14,12 @@ poolObj.on('error', function (err) {
  });
 
  const userModel = require('./models/user');
+ const bookmarkModel = require('./models/bookmark');
  const userObj = userModel(poolObj);
+ const bookmarkObj = bookmarkModel(poolObj);
 
  module.exports = {
    user: userObj,
+   bookmark: bookmarkObj,
    pool: poolObj
  };
