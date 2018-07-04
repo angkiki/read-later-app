@@ -7,7 +7,7 @@ module.exports = function(db){
   }
 
   const bookmarkCreate = function(title, userId, callback) {
-    const queryString = 'INSERT INTO bookmarks(title, userId) VALUES($1, $2)';
+    const queryString = 'INSERT INTO bookmarks(title, user_id) VALUES($1, $2) RETURNING *';
     const values = [title, userId];
     db.query(queryString, values, callback);
   }

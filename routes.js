@@ -1,6 +1,7 @@
 module.exports = function(app, db) {
   const user = require('./controllers/users.js')(db);
   const bookmark = require('./controllers/bookmarks.js')(db);
+  const link = require('./controllers/links.js')(db);
 
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   //          USER
@@ -16,10 +17,10 @@ module.exports = function(app, db) {
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   app.get('/bookmarks', bookmark.bookmarkIndex);
   app.get('/bookmarks/new', bookmark.bookmarkNew);
-  // app.post('/bookmarks/new', bookmark.bookmarkCreate);
+  app.post('/bookmarks/new', bookmark.bookmarkCreate);
 
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   //          LINKS
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
-  // app.get('/links', link.linkIndex);
+  app.get('/links/:id/new', link.newLink);
 }

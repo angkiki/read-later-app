@@ -3,9 +3,18 @@ const Nav = require('./components/nav');
 const Flash = require('./components/flash');
 const Home = require('./home');
 const User = require('./users/user');
-const Bookmark = require('./bookmarks/bookmark')
+const Bookmark = require('./bookmarks/bookmark');
+const Link = require('./links/link');
 
 class Application extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      style: {color: 'red'}
+    }
+  }
+
   render() {
     if (this.props.flash) {
       var flash = <Flash flash={this.props.flash} message={this.props.message} />
@@ -25,6 +34,9 @@ class Application extends React.Component {
         break;
       case 'bookmarks':
         var currentPage = <Bookmark subpage={this.props.subpage} bookmarks={this.props.bookmarks} userId={userId} />
+        break;
+      case 'links':
+        var currentPage = <Link subpage={this.props.subpage} bookmarkId={this.props.bookmarkId} links={this.props.links} />
         break;
     }
 

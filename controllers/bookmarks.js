@@ -1,7 +1,6 @@
 const sha256 = require('js-sha256');
 const SALT = 'Angkiki is VERY Handsome';
-const request = require('request');
-const cheerio = require('cheerio');
+const querystring = require('querystring');
 
 module.exports = function(db) {
 
@@ -18,12 +17,11 @@ module.exports = function(db) {
         if (ourSessionId === userSessionId) {
             db.bookmark.bookmarkIndex(userId, (err, result) => {
               if (err) {
-                  const props = {
-                    page: 'home',
+                  const props = querystring.stringify({
                     flash: 'danger',
                     message: err.detail
-                  }
-                  response.render('application', props);
+                  })
+                  response.redirect('/?' + props);
               } else {
                   const props = {
                     userId: userId,
@@ -36,21 +34,19 @@ module.exports = function(db) {
             })
         } else {
             // unauthorised access
-            const props = {
-              page: 'home',
+            const props = querystring.stringify({
               flash: 'danger',
               message: 'Unauthorised Access'
-            }
-            response.render('application', props);
+            })
+            response.redirect('/?' + props);
         }
     } else {
         // unauthorised access
-        const props = {
-          page: 'home',
+        const props = querystring.stringify({
           flash: 'danger',
           message: 'Unauthorised Access'
-        }
-        response.render('application', props);
+        })
+        response.redirect('/?' + props);
     }
   }
 
@@ -62,18 +58,17 @@ module.exports = function(db) {
 
     if (userId == undefined || userSessionId !== ourSessionId) {
         // user not logged in
-        const props = {
-          page: 'home',
+        const props = querystring.stringify({
           flash: 'danger',
           message: 'Unauthorised Access'
-        }
-        response.render('application', props);
+        });
+        response.redirect('/?' + props);
     } else {
         // user is logged in
         const props = {
           page: 'bookmarks',
           subpage: 'new',
-          userId: 'userId'
+          userId: userId
         }
         response.render('application', props);
     }
@@ -83,44 +78,31 @@ module.exports = function(db) {
     let title = request.body.title;
     let url = request.body.url;
     let userId = request.body.user_id;
+    console.log('userid = ' + userId);
 
     db.bookmark.bookmarkCreate(title, userId, (err, result) => {
       if (err) {
-          const props = {
-            page: 'home',
+          console.log('Query Err: ', err.stack);
+          const props = querystring.stringify({
             flash: 'danger',
             message: err.detail
-          }
-          response.render('application', props);
-      } else {
-          request(url, (error, response, body) => {
-            let $ = cheerio.load(body);
-            let links = $('a');
-
-            const props = {
-              userId: userId,
-              flash: 'success',
-              message: 'Bookmark Created',
-              links: links
-            }
-
-            response.render('application', props);
           })
+          response.redirect('/?' + props);
+      } else {
+          let bookmarkId = result.rows[0].id
+          const props = querystring.stringify({
+            flash: 'success',
+            message: 'Bookmark Created',
+            url: url
+          })
+          response.redirect('/links/' + bookmarkId + '/new?' + props);
       }
     })
   }
 
   return {
     bookmarkIndex,
-    bookmarkNew
+    bookmarkNew,
+    bookmarkCreate
   }
 }
-
-// const url = "https://medium.com/productivity-freak/my-atom-editor-setup-for-js-react-9726cd69ad20"
-// request(url, (error, response, body) => {
-//   var $ = cheerio.load(body);
-//   var links = $('a');
-//   for (let i = 0; i < links.length; i++) {
-//     console.log(links[i].children[0].data + ': ' + links[i].attribs.href);
-//   }
-// })
