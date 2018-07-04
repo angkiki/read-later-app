@@ -45,7 +45,7 @@ class Application extends React.Component {
         <head>
           <title>Angkiki - Read Later</title>
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous" />
-          <link rel="stylesheet" href="/css/bookmark_new.css" />
+          <link rel="stylesheet" href="/css/styles.css" />
         </head>
         <body>
           <Nav userId={userId} />

@@ -1,0 +1,7 @@
+/* #new-links-table > tr > th,td {
+  padding: 10px;
+} */
+
+.new-links-th-td {
+  padding: 10px;
+}

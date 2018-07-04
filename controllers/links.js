@@ -42,10 +42,13 @@ module.exports = function(db) {
             links: linkArray
           }
 
-          // console.log(linkArray[0].children.data);
           response.render('application', props)
         })
     }
+  }
+
+  const createLink = (request, response) => {
+
   }
 
   return {
