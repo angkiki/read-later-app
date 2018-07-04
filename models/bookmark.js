@@ -6,7 +6,14 @@ module.exports = function(db){
     db.query(queryString, values, callback);
   }
 
+  const bookmarkCreate = function(title, userId, callback) {
+    const queryString = 'INSERT INTO bookmarks(title, userId) VALUES($1, $2)';
+    const values = [title, userId];
+    db.query(queryString, values, callback);
+  }
+
   return {
-    bookmarkIndex
+    bookmarkIndex,
+    bookmarkCreate
   }
 }

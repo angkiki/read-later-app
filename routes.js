@@ -15,7 +15,8 @@ module.exports = function(app, db) {
   //          BOOKMARK
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   app.get('/bookmarks', bookmark.bookmarkIndex);
-  app.get('/bookmarks/get', bookmark.bookmarkGet);
+  app.get('/bookmarks/new', bookmark.bookmarkNew);
+  // app.post('/bookmarks/new', bookmark.bookmarkCreate);
 
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   //          LINKS

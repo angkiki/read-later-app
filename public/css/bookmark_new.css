@@ -1,0 +1,8 @@
+.bookmarks-form-leave {
+  opacity: 1;
+}
+
+.bookmarks-form-leave.bookmarks-form-leave-active {
+  opacity: 0.01;
+  transition: opacity 500ms ease-in;
+}

@@ -1,6 +1,6 @@
 const React = require('react');
 const Index = require('./components/index')
-const Get = require('./components/get')
+const New = require('./components/new')
 
 class Bookmark extends React.Component {
   render() {
@@ -9,8 +9,9 @@ class Bookmark extends React.Component {
       case 'index':
         var currentPage = <Index bookmarks={this.props.bookmarks}/>
         break;
-      case 'get':
-        var currentPage = <Get />
+      case 'new':
+        var currentPage = <New userId={this.props.userId} />
+        break;
     }
     return (
       <div id="main-bookmark-holder">

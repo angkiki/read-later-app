@@ -26,6 +26,7 @@ const reactEngine = require('express-react-views').createEngine();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 app.engine('jsx', reactEngine);
+app.use(express.static(__dirname + '/public'));
 
 
 /*
@@ -36,22 +37,18 @@ app.engine('jsx', reactEngine);
     =========================================================================================================
 */
 
-app.get('/', (req, res) => {
-  // const url = "https://medium.com/productivity-freak/my-atom-editor-setup-for-js-react-9726cd69ad20"
-  // request(url, (error, response, body) => {
-  //   var $ = cheerio.load(body);
-  //   var links = $('a');
-  //   for (let i = 0; i < links.length; i++) {
-  //     console.log(links[i].children[0].data + ': ' + links[i].attribs.href);
-  //   }
-  // })
-  let userId = req.cookies['userId'];
+app.get('/', (request, response) => {
+  let userId = request.cookies['userId'];
+  let flash = request.query.flash;
+  let message = request.query.message;
+
   const props = {
     userId: userId,
-    page: 'home'
+    page: 'home',
+    flash: flash,
+    message: message
   }
-
-  res.render('application', props);
+  response.render('application', props);
 });
 
 myRoutes(app, db);

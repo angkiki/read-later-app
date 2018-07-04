@@ -1,12 +1,18 @@
 const sha256 = require('js-sha256')
+const querystring = require('querystring');
 const SALT = 'Angkiki is VERY Handsome';
 
 module.exports = function(db){
 
   const newUser = (request, response) => {
+    let flash = request.query.flash;
+    let message = request.query.message;
+
     const props = {
       page: 'user',
-      subpage: 'new'
+      subpage: 'new',
+      flash: flash,
+      message: message
     }
     response.render('application', props);
   };
@@ -22,44 +28,42 @@ module.exports = function(db){
         db.user.createUser(username, hashedPassword, (err, result) => {
           if (err) {
               // DB ERROR
-              const props = {
-                page: 'user',
-                subpage: 'new',
+              const props = querystring.stringify({
                 flash: 'danger',
                 message: err.detail
-              }
-              response.render('application', props);
+              });
+              response.redirect('/users/new?' + props);
           } else {
               // USER SAVED
-              const props = {
-                page: 'home',
+              const props = querystring.stringify({
                 flash: 'success',
                 message: 'Account Created Successfully'
-              }
-              response.render('application', props);
+              });
+              response.redirect('/?' + props);
           }
         });
 
     } else {
         // passwords do not match
         // redirect to new user page
-        const props = {
-          page: 'user',
-          subpage: 'new',
+        const props = querystring.stringify({
           flash: 'danger',
           message: 'Passwords Do Not Match'
-        }
-
-        response.render('application', props);
+        });
+        response.redirect('/users/new?' + props);
     }
   }
 
   const newUserSession = (request, response) => {
+    let flash = request.query.flash;
+    let message = request.query.message;
+
     const props = {
       page: 'user',
-      subpage: 'login'
+      subpage: 'login',
+      flash: flash,
+      message: message
     }
-
     response.render('application', props);
   }
 
@@ -69,13 +73,11 @@ module.exports = function(db){
     db.user.createUserSession(username, (err, result) => {
       if (err) {
           // no such username ?
-          const props = {
-            page: 'user',
-            subpage: 'login',
+          const props = querystring.stringify({
             flash: 'danger',
             message: err.detail
-          }
-          response.render('application', props);
+          });
+          response.redirect('/users/login?' + props);
       } else {
           let password = result.rows[0].password;
           let hashedPassword = sha256(request.body.password + SALT);
@@ -88,22 +90,18 @@ module.exports = function(db){
               response.cookie('userId', userId);
               response.cookie('sessionId', sessionId);
 
-              const props = {
-                userId: userId,
-                page: 'home',
+              const props = querystring.stringify({
                 flash: 'success',
                 message: 'Logged In Successfully!'
-              }
-              response.render('application', props);
+              });
+              response.redirect('/?' + props);
           } else {
               // wrong password
-              const props = {
-                page: 'user',
-                subpage: 'login',
+              const props = querystring.stringify({
                 flash: 'danger',
                 message: 'Incorrect Password'
-              }
-              response.render('application', props);
+              });
+              response.redirect('/users/login?' + props);
           }
       }
     })
@@ -113,12 +111,11 @@ module.exports = function(db){
     response.clearCookie('userId');
     response.clearCookie('sessionId');
 
-    const props = {
-      page: 'home',
+    const props = querystring.stringify({
       flash: 'success',
       message: 'Logged Out Successfully'
-    }
-    response.render('application', props);
+    });
+    response.redirect('/?' + props);
   }
 
   return {

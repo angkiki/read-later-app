@@ -1,5 +1,7 @@
 const sha256 = require('js-sha256');
 const SALT = 'Angkiki is VERY Handsome';
+const request = require('request');
+const cheerio = require('cheerio');
 
 module.exports = function(db) {
 
@@ -52,7 +54,7 @@ module.exports = function(db) {
     }
   }
 
-  const bookmarkGet = (request, response) => {
+  const bookmarkNew = (request, response) => {
     // authenticate user
     let userId = request.cookies['userId']
     let userSessionId = request.cookies['sessionId'];
@@ -70,15 +72,55 @@ module.exports = function(db) {
         // user is logged in
         const props = {
           page: 'bookmarks',
-          subpage: 'get',
+          subpage: 'new',
           userId: 'userId'
         }
         response.render('application', props);
     }
   }
 
+  const bookmarkCreate = (request, response) => {
+    let title = request.body.title;
+    let url = request.body.url;
+    let userId = request.body.user_id;
+
+    db.bookmark.bookmarkCreate(title, userId, (err, result) => {
+      if (err) {
+          const props = {
+            page: 'home',
+            flash: 'danger',
+            message: err.detail
+          }
+          response.render('application', props);
+      } else {
+          request(url, (error, response, body) => {
+            let $ = cheerio.load(body);
+            let links = $('a');
+
+            const props = {
+              userId: userId,
+              flash: 'success',
+              message: 'Bookmark Created',
+              links: links
+            }
+
+            response.render('application', props);
+          })
+      }
+    })
+  }
+
   return {
     bookmarkIndex,
-    bookmarkGet
+    bookmarkNew
   }
 }
+
+// const url = "https://medium.com/productivity-freak/my-atom-editor-setup-for-js-react-9726cd69ad20"
+// request(url, (error, response, body) => {
+//   var $ = cheerio.load(body);
+//   var links = $('a');
+//   for (let i = 0; i < links.length; i++) {
+//     console.log(links[i].children[0].data + ': ' + links[i].attribs.href);
+//   }
+// })

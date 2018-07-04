@@ -16,7 +16,7 @@ class Index extends React.Component {
         <br />
 
         <div className="text-center">
-          <a href="/bookmarks/get" className="btn btn-primary btn-md">New Bookmark</a>
+          <a href="/bookmarks/new" className="btn btn-primary btn-md">New Bookmark</a>
         </div><br/>
 
         <ul className="list-group">
