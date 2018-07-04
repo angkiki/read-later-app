@@ -23,4 +23,5 @@ module.exports = function(app, db) {
   //          LINKS
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   app.get('/links/:id/new', link.newLink);
+  app.post('/links/:id/new', link.createLink);
 }

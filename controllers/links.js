@@ -31,7 +31,7 @@ module.exports = function(db) {
           for (let i = 0; i < links.length; i++) {
             if (links[i].children[0].data !== undefined) {
               linkArray.push(links[i]);
-              console.log('links: ', links[i]);
+              // console.log('links: ', links[i]);
             }
           };
 
@@ -48,11 +48,16 @@ module.exports = function(db) {
   }
 
   const createLink = (request, response) => {
-
+    // returns single '0' if link was unchecked
+    // returns array of ['1', '0'] if link was checked
+    let checkBoxArray = request.body.link;
+    let titleArray = request.body.title;
+    let urlArray = request.body.url;
   }
 
   return {
-    newLink
+    newLink,
+    createLink
   }
 }
 

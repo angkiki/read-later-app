@@ -36,7 +36,7 @@ class Application extends React.Component {
         var currentPage = <Bookmark subpage={this.props.subpage} bookmarks={this.props.bookmarks} userId={userId} />
         break;
       case 'links':
-        var currentPage = <Link subpage={this.props.subpage} bookmarkId={this.props.bookmarkId} links={this.props.links} />
+        var currentPage = <Link subpage={this.props.subpage} bookmarksId={this.props.bookmarksId} links={this.props.links} />
         break;
     }
 

@@ -6,7 +6,7 @@ class Link extends React.Component {
     let subpage = this.props.subpage;
     switch(subpage) {
       case "new":
-        var currentPage = <New links={this.props.links} bookmarkId={this.props.bookmarkId} />
+        var currentPage = <New links={this.props.links} bookmarksId={this.props.bookmarksId} />
         break;
     }
     return (
