@@ -22,7 +22,9 @@ class Index extends React.Component {
         <ul className="list-group">
           {bookmarks.map(function(b) {
             return (
-              <li className="list-group-item">{b.title}</li>
+              <li className="list-group-item">
+                <a href={'/bookmarks/' + b.id}>{b.title}</a>
+              </li>
             )
           })}
         </ul>

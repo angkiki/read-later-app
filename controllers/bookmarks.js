@@ -118,16 +118,20 @@ module.exports = function(db) {
         let bookmarkId = request.params.id;
         db.bookmark.bookmarkShow(bookmarkId, (err, result) => {
           if (err) {
+              console.log('ERROR: ', err.stack);
               // database query error
-              const props = {
+              const props = querystring.stringify({
                 flash: 'danger',
                 message: err.detail
-              }
+              })
               response.redirect('/bookmarks?' + props);
           } else {
+              console.log('RESULT: ', result.rows[0]);
+
               const props = {
                 page: 'bookmarks',
                 subpage: 'show',
+                userId: userId,
                 result: result.rows
               }
               response.render('application', props);
