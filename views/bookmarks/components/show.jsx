@@ -17,12 +17,18 @@ class Show extends React.Component {
               {this.props.result.map(function(link) {
                 return(
                   <li className="list-group-item">
-                    <a href={link.url}>{link.description}</a>
+                    <a href={link.url} target="_blank">{link.description}</a>
                   </li>
                 )
               })}
             </ul>
           </div>
+        </div>
+
+        <br />
+
+        <div className="text-center">
+          <a className="btn btn-md btn-danger" href="/bookmarks">Back</a>
         </div>
       </div>
     )

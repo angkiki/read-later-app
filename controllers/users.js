@@ -39,7 +39,7 @@ module.exports = function(db){
                 flash: 'success',
                 message: 'Account Created Successfully'
               });
-              response.redirect('/?' + props);
+              response.redirect('/users/login?' + props);
           }
         });
     } else {
@@ -87,7 +87,7 @@ module.exports = function(db){
               });
               response.redirect('/users/login?' + props);
           } else {
-              // check if passwords match 
+              // check if passwords match
               let password = result.rows[0].password;
               let hashedPassword = sha256(request.body.password + SALT);
 

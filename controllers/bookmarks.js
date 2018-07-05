@@ -83,11 +83,9 @@ module.exports = function(db) {
     let title = request.body.title;
     let url = request.body.url;
     let userId = request.body.user_id;
-    console.log('userid = ' + userId);
 
     db.bookmark.bookmarkCreate(title, userId, (err, result) => {
       if (err) {
-          console.log('Query Err: ', err.stack);
           const props = querystring.stringify({
             flash: 'danger',
             message: err.detail
@@ -118,7 +116,6 @@ module.exports = function(db) {
         let bookmarkId = request.params.id;
         db.bookmark.bookmarkShow(bookmarkId, (err, result) => {
           if (err) {
-              console.log('ERROR: ', err.stack);
               // database query error
               const props = querystring.stringify({
                 flash: 'danger',
@@ -126,8 +123,6 @@ module.exports = function(db) {
               })
               response.redirect('/bookmarks?' + props);
           } else {
-              console.log('RESULT: ', result.rows[0]);
-
               const props = {
                 page: 'bookmarks',
                 subpage: 'show',

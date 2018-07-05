@@ -22,6 +22,11 @@ module.exports = function(db) {
     } else {
         let bookmarksId = request.params.id;
         let url = request.query.url;
+        let protocol = url.slice(0,4);
+
+        if (protocol !== 'http') {
+          url = 'https://' + url;
+        }
 
         REQUEST(url, (error, res, body) => {
           var $ = cheerio.load(body);
@@ -29,9 +34,11 @@ module.exports = function(db) {
           const linkArray = [];
 
           for (let i = 0; i < links.length; i++) {
-            if (links[i].children && links[i].children[0].data !== undefined) {
+            let url = links[i].attribs.href;
+            let protocol = url.slice(0,4);
+
+            if (links[i].children && links[i].children[0].data !== undefined && protocol === 'http') {
               linkArray.push(links[i]);
-              // console.log('links: ', links[i]);
             }
           };
 
