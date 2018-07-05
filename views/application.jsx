@@ -1,5 +1,6 @@
 const React = require('react');
 const Nav = require('./components/nav');
+const Footer = require('./components/footer');
 const Flash = require('./components/flash');
 const Home = require('./home');
 const User = require('./users/user');
@@ -50,9 +51,11 @@ class Application extends React.Component {
         <body>
           <Nav userId={userId} />
           {flash}
+          <br />
           <div className="container">
             {currentPage}
           </div>
+          <Footer />
         </body>
       </html>
     )

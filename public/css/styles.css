@@ -1,6 +1,9 @@
-/* #new-links-table > tr > th,td {
-  padding: 10px;
-} */
+#footer {
+  margin-top: 40px;
+  background-color: grey;
+  padding:  40px;
+}
+
 
 .new-links-th-td {
   padding: 10px;
