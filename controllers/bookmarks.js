@@ -23,11 +23,16 @@ module.exports = function(db) {
                   })
                   response.redirect('/?' + props);
               } else {
+                  let flash = request.query.flash;
+                  let message = request.query.message;
+
                   const props = {
                     userId: userId,
                     page: 'bookmarks',
                     subpage: 'index',
-                    bookmarks: result.rows
+                    bookmarks: result.rows,
+                    flash: flash,
+                    message: message
                   }
                   response.render('application', props);
               }
@@ -100,9 +105,41 @@ module.exports = function(db) {
     })
   }
 
+  const bookmarkShow = (request, response) => {
+    // authenticate user
+    let userId = request.cookies['userId'];
+    let userSessionId = request.cookies['sessionId'];
+    let ourSessionId = sha256(userId + SALT);
+
+    if (userId == undefined || userSessionId !== ourSessionId) {
+
+    } else {
+        // user is authenticated
+        let bookmarkId = request.params.id;
+        db.bookmark.bookmarkShow(bookmarkId, (err, result) => {
+          if (err) {
+              // database query error
+              const props = {
+                flash: 'danger',
+                message: err.detail
+              }
+              response.redirect('/bookmarks?' + props);
+          } else {
+              const props = {
+                page: 'bookmarks',
+                subpage: 'show',
+                result: result.rows
+              }
+              response.render('application', props);
+          }
+        })
+    }
+  }
+
   return {
     bookmarkIndex,
     bookmarkNew,
-    bookmarkCreate
+    bookmarkCreate,
+    bookmarkShow
   }
 }

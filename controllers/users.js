@@ -42,7 +42,6 @@ module.exports = function(db){
               response.redirect('/?' + props);
           }
         });
-
     } else {
         // passwords do not match
         // redirect to new user page
@@ -72,36 +71,47 @@ module.exports = function(db){
 
     db.user.createUserSession(username, (err, result) => {
       if (err) {
-          // no such username ?
+          // db query error
           const props = querystring.stringify({
             flash: 'danger',
             message: err.detail
           });
           response.redirect('/users/login?' + props);
       } else {
-          let password = result.rows[0].password;
-          let hashedPassword = sha256(request.body.password + SALT);
-
-          if (password === hashedPassword) {
-              // successfully logged in
-              let userId = result.rows[0].id;
-              let sessionId = sha256(userId + SALT);
-
-              response.cookie('userId', userId);
-              response.cookie('sessionId', sessionId);
-
-              const props = querystring.stringify({
-                flash: 'success',
-                message: 'Logged In Successfully!'
-              });
-              response.redirect('/?' + props);
-          } else {
-              // wrong password
+          if (result.rows.length < 1) {
+              // check if theres any query result first
+              // if no means no such user
               const props = querystring.stringify({
                 flash: 'danger',
-                message: 'Incorrect Password'
+                message: 'Incorrect Username or Password'
               });
               response.redirect('/users/login?' + props);
+          } else {
+              // check if passwords match 
+              let password = result.rows[0].password;
+              let hashedPassword = sha256(request.body.password + SALT);
+
+              if (password === hashedPassword) {
+                  // successfully logged in
+                  let userId = result.rows[0].id;
+                  let sessionId = sha256(userId + SALT);
+
+                  response.cookie('userId', userId);
+                  response.cookie('sessionId', sessionId);
+
+                  const props = querystring.stringify({
+                    flash: 'success',
+                    message: 'Logged In Successfully!'
+                  });
+                  response.redirect('/?' + props);
+              } else {
+                  // wrong password
+                  const props = querystring.stringify({
+                    flash: 'danger',
+                    message: 'Incorrect Username or Password'
+                  });
+                  response.redirect('/users/login?' + props);
+              }
           }
       }
     })

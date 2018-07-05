@@ -1,5 +1,5 @@
 -- create users table
--- DROP TABLE users;
+DROP TABLE users;
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username varchar(255) UNIQUE,
@@ -7,18 +7,18 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- create bookmarks table
--- DROP TABLE bookmarks;
+DROP TABLE bookmarks;
 CREATE TABLE IF NOT EXISTS bookmarks (
   id SERIAL PRIMARY KEY,
   title varchar(255),
   user_id integer
-)
+);
 
 -- create links table
--- DROP TABLE links;
--- CREATE TABLE IF NOT EXISTS links (
---   id SERIAL PRIMARY KEY,
---   user_id INTEGER,
---   title varchar(255),
---   url varchar(255)
--- )
+DROP TABLE links;
+CREATE TABLE IF NOT EXISTS links (
+  id SERIAL PRIMARY KEY,
+  bookmark_id INTEGER,
+  description varchar(255),
+  url varchar(255)
+);

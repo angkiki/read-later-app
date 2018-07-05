@@ -29,7 +29,7 @@ module.exports = function(db) {
           const linkArray = [];
 
           for (let i = 0; i < links.length; i++) {
-            if (links[i].children[0].data !== undefined) {
+            if (links[i].children && links[i].children[0].data !== undefined) {
               linkArray.push(links[i]);
               // console.log('links: ', links[i]);
             }
@@ -51,8 +51,30 @@ module.exports = function(db) {
     // returns single '0' if link was unchecked
     // returns array of ['1', '0'] if link was checked
     let checkBoxArray = request.body.link;
-    let titleArray = request.body.title;
+    let titleArray = request.body.data;
     let urlArray = request.body.url;
+    let bookmarkId = request.params.id;
+
+    console.log('YOOOOOOOOOOO');
+
+    db.link.createLink(bookmarkId, checkBoxArray, titleArray, urlArray, (err, result) => {
+      console.log('HELLLOOOOOOOOO MUDDA FAKAAAA')
+      console.log(err);
+
+      if (err && err.length > 0) {
+          const props = querystring.stringify({
+            flash: 'warning',
+            message: err.length + ' Links Failed To Save'
+          })
+          response.redirect('/bookmarks?' + props);
+      } else {
+          const props = querystring.stringify({
+            flash: 'success',
+            message: 'Links Successfully Saved!'
+          })
+          response.redirect('/bookmarks?' + props);
+      }
+    })
   }
 
   return {
