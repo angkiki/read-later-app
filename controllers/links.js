@@ -39,6 +39,7 @@ module.exports = function(db) {
             page: 'links',
             subpage: 'new',
             bookmarksId: bookmarksId,
+            userId: userId,
             links: linkArray
           }
 
