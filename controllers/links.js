@@ -63,12 +63,7 @@ module.exports = function(db) {
     let urlArray = request.body.url;
     let bookmarkId = request.params.id;
 
-    console.log('YOOOOOOOOOOO');
-
     db.link.createLink(bookmarkId, checkBoxArray, titleArray, urlArray, (err, result) => {
-      console.log('HELLLOOOOOOOOO MUDDA FAKAAAA')
-      console.log(err);
-
       if (err && err.length > 0) {
           const props = querystring.stringify({
             flash: 'warning',
@@ -90,12 +85,3 @@ module.exports = function(db) {
     createLink
   }
 }
-
-// const url = "https://medium.com/productivity-freak/my-atom-editor-setup-for-js-react-9726cd69ad20"
-// request(url, (error, response, body) => {
-//   var $ = cheerio.load(body);
-//   var links = $('a');
-//   for (let i = 0; i < links.length; i++) {
-//     console.log(links[i].children[0].data + ': ' + links[i].attribs.href);
-//   }
-// })

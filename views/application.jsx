@@ -8,14 +8,6 @@ const Bookmark = require('./bookmarks/bookmark');
 const Link = require('./links/link');
 
 class Application extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      style: {color: 'red'}
-    }
-  }
-
   render() {
     if (this.props.flash) {
       var flash = <Flash flash={this.props.flash} message={this.props.message} />
