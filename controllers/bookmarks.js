@@ -123,9 +123,14 @@ module.exports = function(db) {
               })
               response.redirect('/bookmarks?' + props);
           } else {
+              let flash = request.query.flash;
+              let message = request.query.message;
+
               const props = {
                 page: 'bookmarks',
                 subpage: 'show',
+                flash: flash,
+                message: message,
                 userId: userId,
                 result: result.rows
               }

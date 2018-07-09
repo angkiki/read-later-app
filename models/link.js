@@ -7,7 +7,6 @@ module.exports = function(db) {
     for (let i = 0; i < checkBoxArray.length; i++) {
 
       if (checkBoxArray[i].length > 1) {
-        console.log('HUGE ASS CHECKBOX MY BALLZSX')
         let title = titleArray[i];
         let url = urlArray[i]
 
@@ -34,9 +33,17 @@ module.exports = function(db) {
 
   }
 
+  const deleteLink = function(linkId, callback) {
+    const queryString = "DELETE FROM links WHERE id = $1 RETURNING *";
+    const values = [linkId];
+
+    db.query(queryString, values, callback);
+  }
+
 
 
   return {
-    createLink
+    createLink,
+    deleteLink
   }
 }

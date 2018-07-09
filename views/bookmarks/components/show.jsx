@@ -18,6 +18,9 @@ class Show extends React.Component {
                 return(
                   <li className="list-group-item">
                     <a href={link.url} target="_blank">{link.description}</a>
+                    <form style={{display: 'inline-block', float: 'right'}} method="POST" action={"/links/" + link.id + "/delete?_method=delete"}>
+                      <input type="submit" className="btn btn-xs btn-danger" value="x" />
+                    </form>
                   </li>
                 )
               })}

@@ -80,8 +80,32 @@ module.exports = function(db) {
     })
   }
 
+  const deleteLink = (request, response) => {
+    let linkId = request.params.id;
+    db.link.deleteLink(linkId, (err, result) => {
+      if (err) {
+          console.log('ERROR: ', err);
+          const props = querystring.stringify({
+            flash: 'danger',
+            message: 'Oops! Failed to Delete Link'
+          })
+          response.redirect('/bookmarks?' + props);
+      } else {
+          let bookmarkId = result.rows[0].bookmark_id;
+
+          const props = querystring.stringify({
+            flash: 'success',
+            message: 'Link Deleted!'
+          })
+
+          response.redirect('/bookmarks/' + bookmarkId + '/?' + props);
+      }
+    })
+  }
+
   return {
     newLink,
-    createLink
+    createLink,
+    deleteLink
   }
 }
