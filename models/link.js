@@ -19,12 +19,9 @@ module.exports = function(db) {
     const result = [];
 
     for (let j = 0; j < queryArray.length; j++) {
-      console.log('FOR FOR FOR FOR FOR FOR FORRRRRRRRRRRRRR');
-
       let values = [queryArray[j][0], queryArray[j][1], bookmarkId];
 
       try {
-          console.log('RUNNING THIS SHIET!');
           let res = await db.query(queryString, values);
           result.push(res);
       } catch (error) {

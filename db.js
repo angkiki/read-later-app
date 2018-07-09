@@ -3,6 +3,7 @@ const url = require('url');
 
 if( process.env.DATABASE_URL ){
 
+  console.log('HELLO');
   //we need to take apart the url so we can set the appropriate configs
 
   const params = url.parse(process.env.DATABASE_URL);
