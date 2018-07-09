@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
 const request = require('request');
 const db = require('./db');
 const myRoutes = require('./routes.js');
+const PORT = process.env.PORT || 3000;
 
 /*
     =========================================================================================================
@@ -66,7 +67,7 @@ myRoutes(app, db);
     =========================================================================================================
 */
 
-const server = app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
 // Run clean up actions when server shuts down
 server.on('close', () => {
