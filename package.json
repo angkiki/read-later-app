@@ -4,11 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
-  },
-  "engines" : {
-    "node" : "^6.6.0"  
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +19,9 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "request": "^2.87.0"
+  },
+  "engines" : {
+    "node" : "^6.6.0"
   },
   "devDependencies": {}
 }
