@@ -128,6 +128,14 @@ module.exports = function(db){
     response.redirect('/?' + props);
   }
 
+  const newAjaxUser = (request, response) => {
+    const responseObject = {
+      user: 'hello',
+      login: true
+    }
+    response.send(responseObject);
+  }
+
   return {
     newUser,
     createUser,

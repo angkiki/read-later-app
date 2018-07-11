@@ -12,6 +12,9 @@ module.exports = function(app, db) {
   app.post('/users/login', user.createUserSession);
   app.get('/users/logout', user.destroyUserSession);
 
+  // HANDLE AJAX REQUEST
+  app.post('/users/login/ajax', user.newAjaxUser);
+
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   //          BOOKMARK
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
