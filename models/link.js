@@ -1,5 +1,55 @@
 module.exports = function(db) {
 
+  const createAjaxLink = async function(username, bookmarkURL, linksArray, callback) {
+    let userQueryValue = [username];
+    let userQueryString = 'SELECT * FROM users WHERE username = $1';
+
+    try {
+      let user = await db.query(userQueryString, userQueryValue);
+      var userId = user.rows[0].id;
+    } catch(e) {
+      var userId = null;
+    }
+
+    if (userId === null) {
+      return callback(true, null);
+    }
+
+    let bookmarkQueryValue = [bookmarkURL, userId];
+    let bookmarkQueryString = 'INSERT INTO bookmarks(title, user_id) VALUES($1, $2) RETURNING *';
+
+    try {
+      let bookmark = await db.query(bookmarkQueryString, bookmarkQueryValue);
+      var bookmarkId = bookmark.rows[0].id;
+    } catch(e) {
+      var bookmarkId = null;
+    }
+
+    if (bookmarkId === null) {
+      return callback(true, null);
+    }
+
+    var linkResults = [];
+    var linkErrors = [];
+
+    let linksQueryString = 'INSERT INTO links(description, url, bookmark_id) VALUES($1, $2, $3)'
+    for (let j = 0; j<linksArray.length; j++) {
+      let description = linksArray[j][0];
+      let url = linksArray[j][1];
+
+      let values = [description, url, bookmarkId];
+
+      try {
+        let link = await db.query(linksQueryString)
+        linkResults.push(link);
+      } catch(e) {
+        linkErrors.push(e);
+      }
+    }
+
+    callback(linkErrors.length, null);
+  }
+
   const createLink = async function(bookmarkId, checkBoxArray, titleArray, urlArray, callback) {
     const queryArray = [] // title, url
     const queryString = 'INSERT INTO links(description, url, bookmark_id) VALUES($1, $2, $3)'
@@ -44,6 +94,7 @@ module.exports = function(db) {
 
   return {
     createLink,
-    deleteLink
+    deleteLink,
+    createAjaxLink
   }
 }

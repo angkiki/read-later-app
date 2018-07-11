@@ -12,9 +12,6 @@ module.exports = function(app, db) {
   app.post('/users/login', user.createUserSession);
   app.get('/users/logout', user.destroyUserSession);
 
-  // HANDLE AJAX REQUEST
-  app.post('/users/login/ajax', user.newAjaxUser);
-
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   //          BOOKMARK
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
@@ -29,4 +26,10 @@ module.exports = function(app, db) {
   app.get('/links/:id/new', link.newLink);
   app.post('/links/:id/new', link.createLink);
   app.delete('/links/:id/delete', link.deleteLink);
+
+  // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
+  //          AJAX
+  // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
+  app.post('/users/login/ajax', user.newAjaxUser);
+  app.post('/links/new/ajax', link.ajaxNewLink)
 }

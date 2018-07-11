@@ -103,9 +103,54 @@ module.exports = function(db) {
     })
   }
 
+  const ajaxNewLink = (request, response) => {
+    let username = request.query.username;
+    let url = request.query.url;
+
+    REQUEST(url, (error, res, body) => {
+
+      if (error) {
+          const responseObject = {
+            error: 'Failed To Get URL'
+          }
+          response.send(responseObject);
+      } else {
+          var $ = cheerio.load(body);
+          var links = $('a');
+          const linkArray = [];
+
+          for (let i = 0; i < links.length; i++) {
+            let url = links[i].attribs.href;
+            let protocol = url.slice(0,4);
+            let children = links[i].children;
+
+            if (children && children[0].data !== undefined && children[0].data != '' && protocol === 'http') {
+              linkArray.push([ children[0].data, url ]);
+            }
+          };
+
+          db.link.createAjaxLink(username, url, linkArray, (err, result) => {
+            if (err > 0) {
+                const responseObject = {
+                  error: 'Failed to save ' + err + ' URLs';
+                }
+                response.send(responseObject);
+            } else {
+                const responseObject = {
+                  success: true
+                }
+                response.send(responseObject);
+            }
+          })
+      }
+
+    })
+  }
+
   return {
     newLink,
     createLink,
-    deleteLink
+    deleteLink,
+    ajaxNewLink
   }
 }
