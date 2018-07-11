@@ -15,6 +15,8 @@ module.exports = function(db) {
       return callback(true, null);
     }
 
+    console.log('WOOHOO FOUND USER');
+
     let bookmarkQueryValue = [bookmarkURL, userId];
     let bookmarkQueryString = 'INSERT INTO bookmarks(title, user_id) VALUES($1, $2) RETURNING *';
 
@@ -28,6 +30,8 @@ module.exports = function(db) {
     if (bookmarkId === null) {
       return callback(true, null);
     }
+
+    console.log('WOOHOO CREATED BOOKMARKS')
 
     var linkResults = [];
     var linkErrors = [];
@@ -46,6 +50,8 @@ module.exports = function(db) {
         linkErrors.push(e);
       }
     }
+
+    console.log('WOOHOO DONE WITH LINKS!');
 
     callback(linkErrors.length, null);
   }

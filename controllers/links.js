@@ -107,9 +107,12 @@ module.exports = function(db) {
     let username = request.query.username;
     let url = request.query.url;
 
+    console.log('USRN: ' + username + ' URL: ' + url);
+
     REQUEST(url, (error, res, body) => {
 
       if (error) {
+          console.log('REQUEST ERROR');
           const responseObject = {
             error: 'Failed To Get URL'
           }
@@ -129,10 +132,12 @@ module.exports = function(db) {
             }
           };
 
+          console.log('RAN CHEERIOOOOO');
+
           db.link.createAjaxLink(username, url, linkArray, (err, result) => {
             if (err > 0) {
                 const responseObject = {
-                  error: 'Failed to save ' + err + ' URLs';
+                  error: 'Failed to save ' + err + ' URLs'
                 }
                 response.send(responseObject);
             } else {
