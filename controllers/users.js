@@ -130,7 +130,7 @@ module.exports = function(db){
 
   const newAjaxUser = (request, response) => {
     console.log('REQUEST: ', request);
-    console.log('REQUEST BODY: ', request.body);
+    console.log('REQUEST QUERY: ', request.query);
 
     let username = request.body.username;
     let password = request.body.password;
