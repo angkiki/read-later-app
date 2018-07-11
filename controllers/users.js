@@ -141,6 +141,7 @@ module.exports = function(db){
     createUser,
     newUserSession,
     createUserSession,
-    destroyUserSession
+    destroyUserSession,
+    newAjaxUser
   }
 };
