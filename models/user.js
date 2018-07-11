@@ -7,7 +7,6 @@ module.exports = function(db){
   }
 
   const createUserSession = function(username, callback) {
-    console.log(db);
     const queryString = 'SELECT * FROM users WHERE username = $1';
     const values = [username];
     db.query(queryString, values, callback);

@@ -129,18 +129,35 @@ module.exports = function(db){
   }
 
   const newAjaxUser = (request, response) => {
-    console.log('REQUEST: ', request);
-    console.log('REQUEST QUERY: ', request.query);
+    let username = request.query.username;
+    let password = request.query.password;
 
-    let username = request.body.username;
-    let password = request.body.password;
+    db.user.createUserSession(username, (err, result) => {
+      if (err) {
+          console.log('DB ERR: ', err);
+          const responseObject = {
+            error: "No Such User"
+          }
+          response.send(responseObject);
+      } else {
+          let dbPassword = result.rows[0].password;
+          let hashedPassword = sha256(password + SALT);
 
-    const responseObject = {
-      username: username,
-      password: password,
-      foo: 'bar'
-    }
-    response.send(responseObject);
+          if (dbPassword === hashedPassword) {
+              console.log('SUCCESS!');
+              const responseObject = {
+                authenticated: true
+              }
+              response.send(responseObject);
+          } else {
+              console.log('INVALID PW')
+              const responseObject = {
+                error: "Invalid Password"
+              }
+              response.send(responseObject)
+          }
+      }
+    })
   }
 
   return {
