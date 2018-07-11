@@ -146,7 +146,8 @@ module.exports = function(db){
           if (dbPassword === hashedPassword) {
               console.log('SUCCESS!');
               const responseObject = {
-                authenticated: true
+                authenticated: true,
+                username: username
               }
               response.send(responseObject);
           } else {
