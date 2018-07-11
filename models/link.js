@@ -41,12 +41,13 @@ module.exports = function(db) {
       let description = linksArray[j][0];
       let url = linksArray[j][1];
 
-      let values = [description, url, bookmarkId];
+      let linkQueryValues = [description, url, bookmarkId];
 
       try {
-        let link = await db.query(linksQueryString)
+        let link = await db.query(linksQueryString, linkQueryValues);
         linkResults.push(link);
       } catch(e) {
+        console.log('ERROR!!! ', e);
         linkErrors.push(e);
       }
     }
