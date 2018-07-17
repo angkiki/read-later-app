@@ -54,10 +54,26 @@ app.get('/', (request, response) => {
 
 myRoutes(app, db);
 
-// request(url, (error, response, body) => {
-//   let $ = cheerio.load(body);
-//   let links = $('a');
-// })
+// update the db with a one off function
+module.exports.updateLinksTable = function() {
+  const queryString = "SELECT * FROM links";
+  db.pool.query(queryString, (err, result) => {
+    console.log('DONE WITH FIRST QUERY')
+    let linksArray = result.rows;
+    for (let i = 0; i < linksArray.length; i++) {
+      console.log('RUNNING INSERT NUMBER: ' + i);
+      let values = [linksArray[i].id, linksArray[i].description + " - " + linksArray[i].url];
+      let insertQueryString = 'UPDATE links SET search = $2 WHERE id = $1';
+      db.pool.query(insertQueryString, values, (error, iResult) => {
+        if (error) {
+          console.log('INSERT ERROR: ', error);
+        } else {
+          console.log('INSERT SUCCESS NO: ' + i);
+        }
+      });
+    }
+  })
+}
 
 /*
     =========================================================================================================

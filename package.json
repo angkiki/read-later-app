@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "updateLinks": "node -e 'require(\"./index.js\").updateLinksTable()'"
   },
   "author": "",
   "license": "ISC",
