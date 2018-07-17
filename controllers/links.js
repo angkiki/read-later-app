@@ -107,12 +107,9 @@ module.exports = function(db) {
     let username = request.query.username;
     let url = request.query.url;
 
-    console.log('USRN: ' + username + ' URL: ' + url);
-
     REQUEST(url, (error, res, body) => {
 
       if (error) {
-          console.log('REQUEST ERROR');
           const responseObject = {
             error: 'Failed To Get URL'
           }
@@ -132,8 +129,6 @@ module.exports = function(db) {
             }
           };
 
-          console.log('RAN CHEERIOOOOO');
-
           db.link.createAjaxLink(username, url, linkArray, (err, result) => {
             if (err > 0) {
                 const responseObject = {
@@ -152,10 +147,46 @@ module.exports = function(db) {
     })
   }
 
+  const searchLinks = (request, response) => {
+    // authenticate user first
+    let userId = request.cookies['userId'];
+    let userSessionId = request.cookies['sessionId'];
+    let ourSessionId = sha256(userId + SALT);
+
+    if (userId == undefined || userSessionId != ourSessionId) {
+        // user not authenticated
+        const props = querystring.stringify({
+          flash: 'danger',
+          message: 'Unauthorised Access'
+        })
+        response.redirect('/?' + props);
+    } else {
+        let queryParam = request.query.query;
+        db.link.searchLink(queryParam, userId, (err, result) => {
+          if (err) {
+              const props = querystring.stringify({
+                flash: 'danger',
+                message: 'Oops! Failed to Delete Link'
+              })
+              response.redirect('/bookmarks?' + props);
+          } else {
+              const props = {
+                userId: userId,
+                page: 'links',
+                subpage: 'search',
+                links: result
+              }
+              response.render('application', props);
+          }
+        })
+    }
+  }
+
   return {
     newLink,
     createLink,
     deleteLink,
-    ajaxNewLink
+    ajaxNewLink,
+    searchLinks
   }
 }

@@ -15,8 +15,6 @@ module.exports = function(db) {
       return callback(true, null);
     }
 
-    console.log('WOOHOO FOUND USER');
-
     let bookmarkQueryValue = [bookmarkURL, userId];
     let bookmarkQueryString = 'INSERT INTO bookmarks(title, user_id) VALUES($1, $2) RETURNING *';
 
@@ -30,8 +28,6 @@ module.exports = function(db) {
     if (bookmarkId === null) {
       return callback(true, null);
     }
-
-    console.log('WOOHOO CREATED BOOKMARKS')
 
     var linkResults = [];
     var linkErrors = [];
@@ -51,8 +47,6 @@ module.exports = function(db) {
         linkErrors.push(e);
       }
     }
-
-    console.log('WOOHOO DONE WITH LINKS!');
 
     callback(linkErrors.length, null);
   }
@@ -97,11 +91,35 @@ module.exports = function(db) {
     db.query(queryString, values, callback);
   }
 
+  const searchLink = async function(queryParam, userId, callback) {
+    const queryString = "SELECT description,url,search FROM links INNER JOIN bookmarks ON links.bookmark_id = bookmarks.id INNER JOIN users ON bookmarks.user_id = users.id WHERE users.id = $1";
+    const values = [userId];
 
+    db.query(queryString, values, (err, result) => {
+      if (err) {
+          callback(err, null)
+      } else {
+          let resultArray = [];
+          let joinArray = result.rows;
+
+          for (let i = 0; i < joinArray.length; i++) {
+            let searchDowncase = joinArray[i].search.toLowerCase();
+            let queryParamDowncase = queryParam.toLowerCase();
+
+            if (searchDowncase.includes(queryParamDowncase)) {
+              resultArray.push(joinArray[i])
+            }
+          }
+
+          callback(null, resultArray);
+      }
+    })
+  }
 
   return {
     createLink,
     deleteLink,
-    createAjaxLink
+    createAjaxLink,
+    searchLink
   }
 }

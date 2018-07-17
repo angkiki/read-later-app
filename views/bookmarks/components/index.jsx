@@ -14,6 +14,13 @@ class Index extends React.Component {
 
         <br />
 
+        <form action="/links/search" method="get" class="form-inline justify-content-center">
+          <input class="form-control" type="text" name="query" placeholder="Enter Search Keyword" />
+          <input type="submit" class="btn btn-md btn-primary" />
+        </form>
+
+        <br /><br />
+
         <div className="text-center">
           <a href="/bookmarks/new" className="btn btn-primary btn-md">New Bookmark</a>
         </div><br/>

@@ -26,6 +26,7 @@ module.exports = function(app, db) {
   app.get('/links/:id/new', link.newLink);
   app.post('/links/:id/new', link.createLink);
   app.delete('/links/:id/delete', link.deleteLink);
+  app.get('/links/search', link.searchLinks);
 
   // ~~~ ~~~ ~~~ ~~~ ~~~ ~~~
   //          AJAX
