@@ -32,12 +32,12 @@ module.exports = function(db) {
     var linkResults = [];
     var linkErrors = [];
 
-    let linksQueryString = 'INSERT INTO links(description, url, bookmark_id) VALUES($1, $2, $3)'
+    let linksQueryString = 'INSERT INTO links(description, url, search, bookmark_id) VALUES($1, $2, $3, $4)'
     for (let j = 0; j<linksArray.length; j++) {
       let description = linksArray[j][0];
       let url = linksArray[j][1];
 
-      let linkQueryValues = [description, url, bookmarkId];
+      let linkQueryValues = [description, url, description + " " + url, bookmarkId];
 
       try {
         let link = await db.query(linksQueryString, linkQueryValues);
@@ -53,7 +53,7 @@ module.exports = function(db) {
 
   const createLink = async function(bookmarkId, checkBoxArray, titleArray, urlArray, callback) {
     const queryArray = [] // title, url
-    const queryString = 'INSERT INTO links(description, url, bookmark_id) VALUES($1, $2, $3)'
+    const queryString = 'INSERT INTO links(description, url, search, bookmark_id) VALUES($1, $2, $3, $4)'
 
     for (let i = 0; i < checkBoxArray.length; i++) {
 
@@ -61,7 +61,7 @@ module.exports = function(db) {
         let title = titleArray[i];
         let url = urlArray[i]
 
-        queryArray.push([title, url]);
+        queryArray.push([title, url, title + " " + url]);
       }
     }
 
@@ -69,7 +69,7 @@ module.exports = function(db) {
     const result = [];
 
     for (let j = 0; j < queryArray.length; j++) {
-      let values = [queryArray[j][0], queryArray[j][1], bookmarkId];
+      let values = [queryArray[j][0], queryArray[j][1], queryArray[j][2], bookmarkId];
 
       try {
           let res = await db.query(queryString, values);
